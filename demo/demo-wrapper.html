@@ -1,0 +1,37 @@
+<!--
+Copyright (c) 2015 DudeTeam. All rights reserved.
+-->
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../dude-resource-manager.html">
+
+<dom-module id="demo-wrapper">
+    <template>
+        <dude-resource-manager resources="[[ resources ]]"></dude-resource-manager>
+        Resource submitted: <span>{{ resource.name }}</span>
+    </template>
+    <script>
+        Polymer({
+            is: "demo-wrapper",
+            properties: {
+                "resources": {
+                    "type": Array,
+                    "value": [
+                        {"item": {"name": "test.png", "data": {"file_name": "https://placehold.it/350x150", "size": 1234567890}}},
+                        {"item": {"name": "cover.png", "data": {"file_name": "https://placehold.it/512x512", "size": 12345}}},
+                        {"item": {"name": "skull.png", "data": {"file_name": "https://placehold.it/256x256", "size": 34}}}
+                    ]
+                },
+                "resource": {
+                    "type": Object
+                }
+            },
+            listeners: {
+                "dude-resource-manager-submit": "_resourceSubmitted"
+            },
+            _resourceSubmitted: function (e) {
+                this.set("resource", e.detail);
+            }
+        });
+    </script>
+
+</dom-module>
