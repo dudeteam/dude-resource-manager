@@ -16,18 +16,23 @@ Copyright (c) 2015 DudeTeam. All rights reserved.
     <style>
         #container {
             min-height: 256px;
-            border: 1px solid;
         }
 
         #left-panel {
-            max-width: 256px;
+            max-width: 512px;
         }
 
         #right-panel {
 
         }
-        
+
         #preview > img {
+            max-width: 100%;
+            max-height: 256px;
+            overflow: hidden;
+        }
+
+        #preview > audio {
             max-width: 100%;
             max-height: 256px;
             overflow: hidden;
@@ -36,7 +41,7 @@ Copyright (c) 2015 DudeTeam. All rights reserved.
     <template>
         <div id="container" class="layout horizontal">
             <!-- START Left Panel -->
-            <div id="left-panel" class="flex" style="border: 1px solid;">
+            <div id="left-panel" class="flex-1">
                 <div class="layout vertical">
                     <div class="flex">
                         <div id="preview">
@@ -51,7 +56,7 @@ Copyright (c) 2015 DudeTeam. All rights reserved.
             </div>
             <!-- END Left Panel -->
             <!-- START Right Panel -->
-            <div id="right-panel" class="flex-2" style="border: 1px solid;">
+            <div id="right-panel" class="flex-2">
                 <div class="layout vertical">
                     <dude-hierarchy
                             id="resources-hierarchy"
