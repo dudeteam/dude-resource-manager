@@ -13,60 +13,28 @@ Copyright (c) 2015 DudeTeam. All rights reserved.
 -->
 <dom-module id="dude-resource-manager">
     <style include="iron-flex iron-flex-factors"></style>
-    <style>
-        #container {
-            min-height: 256px;
-        }
-
-        #left-panel {
-            max-width: 512px;
-        }
-
-        #right-panel {
-
-        }
-
-        #preview > img {
-            max-width: 100%;
-            max-height: 256px;
-            overflow: hidden;
-        }
-
-        #preview > audio {
-            max-width: 100%;
-            max-height: 256px;
-            overflow: hidden;
-        }
-    </style>
     <template>
-        <div id="container" class="layout horizontal">
-            <!-- START Left Panel -->
-            <div id="left-panel" class="flex-1">
-                <div class="layout vertical">
-                    <div class="flex">
-                        <div id="preview">
-                            <img src="{{ resource.data.file_name }}" />
-                        </div>
-                    </div>
-                    <div class="flex">
-                        <div>[[ resource.name ]]</div>
-                        <div>[[ resourceSize ]]</div>
-                    </div>
-                </div>
+        <div class="layout vertical">
+            <!-- START Top -->
+            <div class="flex">
+                <dude-hierarchy
+                        id="resources-hierarchy"
+                        items="[[ resources ]]"
+                        placeholder="Search resource">
+                </dude-hierarchy>
+                <button on-click="_uploadResource">Upload</button>
             </div>
-            <!-- END Left Panel -->
-            <!-- START Right Panel -->
-            <div id="right-panel" class="flex-2">
-                <div class="layout vertical">
-                    <dude-hierarchy
-                            id="resources-hierarchy"
-                            class="flex"
-                            items="[[ resources ]]"
-                            placeholder="Search resource">
-                    </dude-hierarchy>
-                </div>
+            <!-- END Top -->
+            <!-- START Bottom -->
+            <div class="flex">
+                <template is="dom-if" if="[[ resource ]]">
+                    <div>Name: <span>[[ resource.name ]]</span></div>
+                    <div>Size: <span>[[ resourceSize ]]</span></div>
+                    <div><img src="[[ resource.data.file_name ]]" /></div>
+                    <button on-click="_deleteResource">Delete</button>
+                </template>
             </div>
-            <!-- END Right Panel -->
+            <!-- END Bottom -->
         </div>
     </template>
     <script>
@@ -131,6 +99,33 @@ Copyright (c) 2015 DudeTeam. All rights reserved.
             _formatSize: function (size) {
                 var i = Math.floor(Math.log(size) / Math.log(1024));
                 return (size / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
+            },
+
+            /**
+             * Called when uploading a resource
+             * @emits {dude-resource-manager-upload}
+             * @private
+             */
+            _uploadResource: function () {
+                this.fire("dude-resource-manager-upload");
+            },
+
+            /**
+             * Called when uploading a resource
+             * @emits {dude-resource-manager-rename}
+             * @private
+             */
+            _renameResource: function () {
+                this.fire("dude-resource-manager-rename", this.get("resource"));
+            },
+
+            /**
+             * Called when deleting a resource
+             * @emits {dude-resource-manager-delete}
+             * @private
+             */
+            _deleteResource: function () {
+                this.fire("dude-resource-manager-delete", this.get("resource"));
             }
         });
     </script>
