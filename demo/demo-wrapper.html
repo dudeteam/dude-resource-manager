@@ -7,10 +7,16 @@ Copyright (c) 2015 DudeTeam. All rights reserved.
 <dom-module id="demo-wrapper">
     <template>
         <dude-resource-manager
-                resources="[[ resources ]]">
+                resources="[[ resources ]]"
+                resource="{{ resource }}">
         </dude-resource-manager>
         <div>
-            Resource submitted: <span>{{ resource.name }}</span>
+            <div>
+                Resource selected: <span>{{ resource.name }}</span>
+            </div>
+            <div>
+                Resource submitted: <span>{{ resourceSubmitted.name }}</span>
+            </div>
         </div>
     </template>
     <script>
@@ -27,13 +33,16 @@ Copyright (c) 2015 DudeTeam. All rights reserved.
                 },
                 "resource": {
                     "type": Object
+                },
+                "resourceSubmitted": {
+                    "type": Object
                 }
             },
             listeners: {
                 "dude-resource-manager-submit": "_resourceSubmitted"
             },
             _resourceSubmitted: function (e) {
-                this.set("resource", e.detail);
+                this.set("resourceSubmitted", e.detail);
             }
         });
     </script>
