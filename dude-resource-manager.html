@@ -30,7 +30,16 @@ Copyright (c) 2015 DudeTeam. All rights reserved.
                 <template is="dom-if" if="[[ resource ]]">
                     <div>Name: <span>[[ resource.name ]]</span></div>
                     <div>Size: <span>[[ resourceSize ]]</span></div>
-                    <div><img src="[[ resource.data.file_name ]]" /></div>
+                    <template is="dom-if" if="[[ _resourceType('Image', resourceType) ]]">
+                        <div>
+                            <img src="[[ resource.data.file_name ]]" />
+                        </div>
+                    </template>
+                    <template is="dom-if" if="[[ _resourceType('Sound', resourceType) ]]">
+                        <div>
+                            <audio src="[[ resource.data.file_name ]]" controls></audio>
+                        </div>
+                    </template>
                     <button on-click="_deleteResource">Delete</button>
                 </template>
             </div>
@@ -49,6 +58,32 @@ Copyright (c) 2015 DudeTeam. All rights reserved.
                 },
 
                 /**
+                 * The resource type
+                 */
+                "resourceType": {
+                    "type": String,
+                    "value": "*"
+                },
+
+                /**
+                 * The resource type
+                 */
+                "resourceTypes": {
+                    "type": Object,
+                    "value": {
+                        "*": function () {
+                            return true;
+                        },
+                        "Image": function (item) {
+                            return item.name.indexOf(".png") !== -1;
+                        },
+                        "Sound": function (item) {
+                            return item.name.indexOf(".mp3") !== -1;
+                        }
+                    }
+                },
+
+                /**
                  * The resource selected
                  */
                 "resource": {
@@ -64,6 +99,9 @@ Copyright (c) 2015 DudeTeam. All rights reserved.
                     "computed": "_formatSize(resource.data.size)"
                 }
             },
+            observers: [
+                "_resourceTypeChanged(resourceType, resourceTypes)"
+            ],
             listeners: {
                 "dude-hierarchy-item-select": "_itemSelected",
                 "dude-hierarchy-item-submit": "_itemSubmitted"
@@ -127,6 +165,30 @@ Copyright (c) 2015 DudeTeam. All rights reserved.
              */
             _deleteResource: function () {
                 this.fire("dude-resource-manager-delete", this.get("resource"));
+            },
+
+            /**
+             * Resource type changed
+             * @private
+             */
+            _resourceTypeChanged: function (resourceType, resourceTypes) {
+                var resourceTypeFn = resourceTypes[resourceType];
+                if (typeof resourceTypeFn === "undefined") {
+                    throw new Error("`" + resourceType + "` is not a valid resource type");
+                }
+                this.$["resources-hierarchy"].filter(function (item) {
+                    return resourceTypeFn(item.item);
+                });
+            },
+
+            /**
+             * Returns whether the type is the current resourceType
+             * @param {String} type
+             * @returns {Boolean}
+             * @private
+             */
+            _resourceType: function (type) {
+                return this.get("resourceType") === type;
             }
         });
     </script>

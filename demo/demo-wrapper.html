@@ -8,9 +8,14 @@ Copyright (c) 2015 DudeTeam. All rights reserved.
     <template>
         <dude-resource-manager
                 resources="[[ resources ]]"
+                resource-type="{{ resourceType }}"
                 resource="{{ resource }}">
         </dude-resource-manager>
         <div>
+            <div>
+                <button on-click="_image">Image</button>
+                <button on-click="_sound">Sound</button>
+            </div>
             <div>
                 Resource selected: <span>{{ resource.name }}</span>
             </div>
@@ -26,13 +31,17 @@ Copyright (c) 2015 DudeTeam. All rights reserved.
                 "resources": {
                     "type": Array,
                     "value": [
-                        {"item": {"name": "test.png", "data": {"file_name": "http://lorempixel.com/512/512/", "size": 1234567890}}},
-                        {"item": {"name": "cover.png", "data": {"file_name": "http://lorempixel.com/320/220/", "size": 12345}}},
-                        {"item": {"name": "skull.png", "data": {"file_name": "http://lorempixel.com/320/210/", "size": 34}}}
+                        {"item": {"name": "image1.png", "data": {"file_name": "http://goo.gl/aT8b1W", "size": 512}}},
+                        {"item": {"name": "image2.png", "data": {"file_name": "http://goo.gl/eL4sot", "size": 512}}},
+                        {"item": {"name": "sound1.mp3", "data": {"file_name": "http://goo.gl/JVcU3g", "size": 2048}}},
+                        {"item": {"name": "sound2.mp3", "data": {"file_name": "http://goo.gl/64THWa", "size": 2048}}}
                     ]
                 },
                 "resource": {
                     "type": Object
+                },
+                "resourceType": {
+                    "value": "Sound"
                 },
                 "resourceSubmitted": {
                     "type": Object
@@ -43,6 +52,12 @@ Copyright (c) 2015 DudeTeam. All rights reserved.
             },
             _resourceSubmitted: function (e) {
                 this.set("resourceSubmitted", e.detail);
+            },
+            _image: function () {
+                this.set("resourceType", "Image");
+            },
+            _sound: function () {
+                this.set("resourceType", "Sound");
             }
         });
     </script>
