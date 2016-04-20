@@ -61,8 +61,7 @@ Copyright (c) 2015 DudeTeam. All rights reserved.
                  * The resource type
                  */
                 "resourceType": {
-                    "type": String,
-                    "value": "*"
+                    "type": String
                 },
 
                 /**
@@ -75,7 +74,7 @@ Copyright (c) 2015 DudeTeam. All rights reserved.
                             return true;
                         },
                         "Image": function (item) {
-                            return item.name.indexOf(".png") !== -1;
+                            return item.name.indexOf(".png") !== -1 || item.name.indexOf(".jpg") !== -1;
                         },
                         "Sound": function (item) {
                             return item.name.indexOf(".mp3") !== -1;
