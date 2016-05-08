@@ -13,34 +13,60 @@ Copyright (c) 2015 DudeTeam. All rights reserved.
 -->
 <dom-module id="dude-resource-manager">
     <style include="iron-flex iron-flex-factors"></style>
+    <style>
+        :host {
+            @apply(--layout-horizontal);
+            @apply(--layout-flex);
+        }
+        #container {
+            padding: 10px;
+            @apply(--layout-vertical);
+            @apply(--layout-flex);
+        }
+        #preview img {
+            max-width: 100%;
+        }
+        #resources {
+            @apply(--layout-flex);
+        }
+        paper-button {
+            @apply(--dude-button);
+        }
+        #current {
+            margin-top: 20px;
+        }
+        .info {
+            font-family: var(--dude-font-content);
+            font-size: .8em;
+            color: var(--dude-dark2-color);
+        }
+    </style>
     <template>
-        <div class="layout vertical">
+        <div id="container" class="layout vertical">
             <!-- START Top -->
-            <div class="flex">
+            <div id="resources">
                 <dude-hierarchy
                         id="resources-hierarchy"
                         items="[[ resources ]]"
                         placeholder="Search resource">
                 </dude-hierarchy>
-                <button on-click="_uploadResource">Upload</button>
+                <paper-button on-click="_uploadResource">Upload</paper-button>
             </div>
             <!-- END Top -->
             <!-- START Bottom -->
-            <div class="flex">
+            <div id="current">
                 <template is="dom-if" if="[[ resource ]]">
-                    <div>Name: <span>[[ resource.name ]]</span></div>
-                    <div>Size: <span>[[ resourceSize ]]</span></div>
-                    <template is="dom-if" if="[[ _resourceType('Image', resourceType) ]]">
-                        <div>
+                    <div id="preview">
+                        <template is="dom-if" if="[[ _resourceType('Image', resourceType) ]]">
                             <img src="[[ resource.data.file_name ]]" />
-                        </div>
-                    </template>
-                    <template is="dom-if" if="[[ _resourceType('Sound', resourceType) ]]">
-                        <div>
+                        </template>
+                        <template is="dom-if" if="[[ _resourceType('Sound', resourceType) ]]">
                             <audio src="[[ resource.data.file_name ]]" controls></audio>
-                        </div>
-                    </template>
-                    <button on-click="_deleteResource">Delete</button>
+                        </template>
+                    </div>
+                    <div class="info">Name: <span>[[ resource.name ]]</span></div>
+                    <div class="info">Size: <span>[[ resourceSize ]]</span></div>
+                    <paper-button on-click="_deleteResource">Delete</paper-button>
                 </template>
             </div>
             <!-- END Bottom -->
