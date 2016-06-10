@@ -58,7 +58,15 @@ Copyright (c) 2015 DudeTeam. All rights reserved.
                 <template is="dom-if" if="[[ resource ]]">
                     <div id="preview">
                         <template is="dom-if" if="[[ _resourceType('Image', resourceType) ]]">
-                            <img src="[[ resource.data.file_name ]]" />
+                            <template is="dom-if" if="[[ _resourceExtension('png', resource) ]]">
+                                <img src="[[ resource.data.file_name ]]" />
+                            </template>
+                            <template is="dom-if" if="[[ _resourceExtension('mp4', resource) ]]">
+                                <video src="[[ resource.data.file_name ]]" controls></video>
+                            </template>
+                            <template is="dom-if" if="[[ _resourceExtension('html', resource) ]]">
+                                <iframe src="[[ resource.data.file_name ]]"></iframe>
+                            </template>
                         </template>
                         <template is="dom-if" if="[[ _resourceType('Sound', resourceType) ]]">
                             <audio src="[[ resource.data.file_name ]]" controls></audio>
@@ -100,7 +108,8 @@ Copyright (c) 2015 DudeTeam. All rights reserved.
                             return true;
                         },
                         "Image": function (item) {
-                            return item.name.indexOf(".html") !== -1 || item.name.indexOf(".png") !== -1 || item.name.indexOf(".jpg") !== -1;
+                            return item.name.indexOf(".html") !== -1 || item.name.indexOf(".mp4") !== -1 ||
+                                    item.name.indexOf(".png") !== -1 || item.name.indexOf(".jpg") !== -1;
                         },
                         "Sound": function (item) {
                             return item.name.indexOf(".mp3") !== -1;
@@ -214,6 +223,17 @@ Copyright (c) 2015 DudeTeam. All rights reserved.
              */
             _resourceType: function (type) {
                 return this.get("resourceType") === type;
+            },
+
+            /**
+             * Returns whether the resource if of the given extension
+             * @param {String} extension
+             * @returns {Boolean}
+             * @private
+             */
+            _resourceExtension: function (extension) {
+                console.log("pd", this.get("resource"));
+                return this.get("resource.name").split(".").pop() === extension;
             }
         });
     </script>
